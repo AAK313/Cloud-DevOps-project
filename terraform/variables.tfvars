@@ -1,0 +1,25 @@
+aws_region              = "us-east-1"
+availability_zone       = "us-east-1a"
+environment             = "dev"
+vpc_cidr                = "10.0.0.0/16"
+public_subnet_cidr      = "10.0.1.0/24"
+private_subnet_cidr     = "10.0.2.0/24"
+private_subnet_cidr_2   = "10.0.3.0/24"
+key_name                = "my-key"
+ec2_ami                 = "ami-0c02fb55956c7d316"
+public_instance_type    = "t3.micro"
+private_instance_type   = "t3.micro"
+allowed_ssh_cidrs       = ["203.0.113.0/24"]
+private_allowed_ssh_cidrs = ["10.0.0.0/16"]
+cloudwatch_alarm_actions = ["arn:aws:sns:us-east-1:123456789012:alerts"]
+eks_cluster_name        = "ivolve-eks"
+eks_version             = "1.29"
+eks_desired_capacity    = 2
+eks_min_size            = 1
+eks_max_size            = 3
+eks_node_instance_type  = "t3.medium"
+tags = {
+  Owner = "Amr"
+  Project = "Ivolve"
+  Environment = "dev"
+}
