@@ -108,6 +108,7 @@ Outputs expose VPC IDs, subnet IDs, EKS cluster info, and EC2 public IP for SSH.
 - Terraform backend errors: verify S3 bucket/table exist and IAM perms.
 - EKS access: ensure node group IAM roles and aws-auth config map applied.
 - GitHub Actions: use `workflow_dispatch` input `dry_run=true` while testing.
+- ⚠️ Note: For Docker login in GitHub Actions, you must use a personal access token (DOCKERHUB_PASSWORD), not your DockerHub password. Generate one in DockerHub under Account Settings → Security → New Access Token.
 
 Refer to the Architecture Overview section for system overview.
 
