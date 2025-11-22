@@ -1,4 +1,4 @@
-# CloudDevOpsProject
+# IVOLVE INTERNSHIP - CloudDevOpsProject
 
 Comprehensive reference implementation that ties Docker, Terraform, EKS, GitHub Actions, and ArgoCD together for a simple Flask application.
 
@@ -13,15 +13,15 @@ Comprehensive reference implementation that ties Docker, Terraform, EKS, GitHub 
 
 ## Getting Started
 
-1. **Create GitHub Repo** – run `gh repo create CloudDevOpsProject --public` (or via UI) and push this workspace.
-2. **Configure Terraform Backend** – copy `terraform/backend.auto.tfvars.example` to `backend.auto.tfvars` and fill in S3 bucket/DynamoDB table names.
-3. **Provide Variable Values** – copy `terraform/variables.auto.tfvars.example` to `variables.auto.tfvars` and adjust CIDRs, AMIs, key pairs, etc.
+1. **Create GitHub Repo** – run `gh repo create Cloud-DevOps-Project --public` (or via UI) and push this workspace.
+2. **Configure Terraform Backend** – `terraform/backend.tf`  and fill in S3 bucket/DynamoDB table names.
+3. **Provide Variable Values** – `terraform/variables.tfvars` to and adjust CIDRs, AMIs, key pairs, etc.
 4. **Bootstrap Terraform**:
    ```bash
    cd terraform
-   terraform init -backend-config=backend.auto.tfvars
-   terraform plan -var-file=variables.auto.tfvars
-   terraform apply -var-file=variables.auto.tfvars
+   terraform init -backend-config=backend.tf
+   terraform plan -var-file=variables.tfvars
+   terraform apply -var-file=variables.tfvars
    ```
 5. **Update kubeconfig** once the EKS cluster is created:
    ```bash
@@ -34,7 +34,7 @@ Comprehensive reference implementation that ties Docker, Terraform, EKS, GitHub 
 Set the following GitHub Actions repository secrets before enabling the pipeline:
 
 - `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`
-- `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`
+- `DOCKERHUB_USERNAME`, `DOCKERHUB_PASSWORD`
 - `KUBE_CONFIG` (base64-encoded kubeconfig with access to EKS)
 - Optional: `TRIVY_ENABLED=true`
 
@@ -48,22 +48,22 @@ Set the following GitHub Actions repository secrets before enabling the pipeline
 - kubectl + eksctl (optional) + ArgoCD CLI
 - Docker + DockerHub account
 - Trivy (if enabling image scan stage)
-- Git + GitHub repo `CloudDevOpsProject`
+- Git + GitHub repo `Cloud-DevOps-Project`
 
 ### Repository Bootstrap
 
 1. Clone this repo locally.
-2. Update `terraform/backend.auto.tfvars` with your S3 bucket and DynamoDB table names for state.
-3. Update `terraform/variables.auto.tfvars` (or use CLI vars) with CIDRs, key pair names, AMI IDs, etc.
-4. Configure GitHub secrets referenced in `.github/workflows/ci.yml` (see comments inside file).
+2. Update `terraform/backend.tf` with your S3 bucket and DynamoDB table names for state.
+3. Update `terraform/variables.tfvars` (or use CLI vars) with CIDRs, key pair names, AMI IDs, etc.
+4. Configure GitHub secrets referenced in `.github/workflows/pipeline.yml` (see comments inside file).
 
 ### Terraform Workflow
 
 ```bash
 cd terraform
-terraform init -backend-config="backend.auto.tfvars"
-terraform plan -var-file="variables.auto.tfvars"
-terraform apply -var-file="variables.auto.tfvars"
+terraform init -backend-config="backend.tf"
+terraform plan -var-file="variables.tfvars"
+terraform apply -var-file="variables.tfvars"
 ```
 
 Outputs expose VPC IDs, subnet IDs, EKS cluster info, and EC2 public IP for SSH. NAT + ACL settings live in `modules/network`.
@@ -76,16 +76,16 @@ Outputs expose VPC IDs, subnet IDs, EKS cluster info, and EC2 public IP for SSH.
    ```
 2. Apply manifests locally (before ArgoCD takes over):
    ```bash
-   kubectl apply -f k8s/ivolve/namespace.yaml
-   kubectl apply -f k8s/ivolve/deployment.yaml
-   kubectl apply -f k8s/ivolve/service.yaml
+   kubectl apply -f k8s/namespace.yaml
+   kubectl apply -f k8s/deployment.yaml
+   kubectl apply -f k8s/service.yaml
    ```
 3. Once ArgoCD app is synced, future changes should flow through Git commits.
 
 ### CI/CD Pipeline
 
-- Workflow file: `.github/workflows/ci.yml`
-- Required secrets: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`, `KUBE_CONFIG` (base64), optional `TRIVY_ENABLED` flag.
+- Workflow file: `.github/workflows/pipeline.yml`
+- Required secrets:  `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`, optional `TRIVY_ENABLED` flag.
 - Shared logic lives under `vars/` as shell scripts sourced by workflow steps.
 
 ### ArgoCD
