@@ -20,7 +20,6 @@ env:
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/cloud-devops-app
   IMAGE_TAG: ${{ github.sha }}
   IMAGE_URI: ${{ secrets.DOCKERHUB_USERNAME }}/cloud-devops-app:${{ github.sha }}
-  TRIVY_ENABLED: ${{ secrets.TRIVY_ENABLED }}
 
 jobs:
   build:
@@ -44,6 +43,8 @@ jobs:
         shell: bash
 
       - name: Scan Image
+        env:
+          TRIVY_ENABLED: ${{ secrets.TRIVY_ENABLED }}
         run: |
           source vars/library.sh
           scan_image
