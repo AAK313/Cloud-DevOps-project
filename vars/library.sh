@@ -49,7 +49,7 @@ push_manifests() {
     log "No manifest changes to commit"
     return
   fi
-  git add k8s/ivolve/deployment.yaml
+  git add k8s/deployment.yaml
   git commit -m "chore(manifests): update image to ${IMAGE_TAG}" || log "No changes committed"
   git push origin "$GIT_BRANCH"
 }
