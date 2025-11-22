@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/AAK313/CloudDevOpsProject.git
+    repoURL: https://github.com/AAK313/Cloud-DevOps-project.git
     targetRevision: main
     path: k8s/ivolve
   destination:
