@@ -1,6 +1,9 @@
 # IVOLVE INTERNSHIP - CloudDevOpsProject
 
-Comprehensive reference implementation that ties Docker, Terraform, EKS, GitHub Actions, and ArgoCD together for a simple Flask application.
+<img width="1915" height="807" alt="Screenshot from 2025-11-22 19-26-21" src="https://github.com/user-attachments/assets/1356afef-aea4-4548-92ae-11c8180f28a7" />
+
+
+Comprehensive implementation that ties Docker, Terraform, EKS, GitHub Actions, and ArgoCD together for a simple Flask application.
 
 ## Repository Layout
 
@@ -19,23 +22,22 @@ Comprehensive reference implementation that ties Docker, Terraform, EKS, GitHub 
 4. **Bootstrap Terraform**:
    ```bash
    cd terraform
-   terraform init -backend-config=backend.tf
-   terraform plan -var-file=variables.tfvars
-   terraform apply -var-file=variables.tfvars
+   terraform init --backend-config backend.tf
+   terraform plan --var-file variables.tfvars
+   terraform apply --var-file variables.tfvars
    ```
 5. **Update kubeconfig** once the EKS cluster is created:
    ```bash
    aws eks update-kubeconfig --name <cluster_name> --region <region>
    ```
 6. **Install ArgoCD** (if needed) and apply `argocd/application.yaml` to let it reconcile Kubernetes manifests automatically.
+  
 
 ## CI/CD Secrets
 
 Set the following GitHub Actions repository secrets before enabling the pipeline:
 
-- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`
 - `DOCKERHUB_USERNAME`, `DOCKERHUB_PASSWORD`
-- `KUBE_CONFIG` (base64-encoded kubeconfig with access to EKS)
 - Optional: `TRIVY_ENABLED=true`
 
 ## Setup Instructions
@@ -61,9 +63,9 @@ Set the following GitHub Actions repository secrets before enabling the pipeline
 
 ```bash
 cd terraform
-terraform init -backend-config="backend.tf"
-terraform plan -var-file="variables.tfvars"
-terraform apply -var-file="variables.tfvars"
+terraform init --backend-config backend.tf
+terraform plan --var-file variables.tfvars
+terraform apply --var-file variables.tfvars
 ```
 
 Outputs expose VPC IDs, subnet IDs, EKS cluster info, and EC2 public IP for SSH. NAT + ACL settings live in `modules/network`.
@@ -82,17 +84,27 @@ Outputs expose VPC IDs, subnet IDs, EKS cluster info, and EC2 public IP for SSH.
    ```
 3. Once ArgoCD app is synced, future changes should flow through Git commits.
 
+
+
 ### CI/CD Pipeline
 
 - Workflow file: `.github/workflows/pipeline.yml`
 - Required secrets:  `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`, optional `TRIVY_ENABLED` flag.
 - Shared logic lives under `vars/` as shell scripts sourced by workflow steps.
+  
+  <img width="1920" height="743" alt="Screenshot from 2025-11-22 19-56-23" src="https://github.com/user-attachments/assets/74b32808-8821-43ae-9950-3c6f20838623" />
+
 
 ### ArgoCD
 
 1. Install ArgoCD in the cluster (if not already).
-2. Apply `argocd/application.yaml` to register the app.
-3. Confirm project/cluster credentials allow sync to namespace `ivolve`.
+    ```bash
+   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+   ```
+3. Apply `argocd/application.yaml` to register the app.
+4. Confirm project/cluster credentials allow sync to namespace `ivolve`.
+
+   <img width="1915" height="807" alt="Screenshot from 2025-11-22 19-24-16" src="https://github.com/user-attachments/assets/b1d97566-cb4c-4b31-b2e7-53778ed549dc" />
 
 ### Local Development
 
@@ -113,6 +125,8 @@ Outputs expose VPC IDs, subnet IDs, EKS cluster info, and EC2 public IP for SSH.
 Refer to the Architecture Overview section for system overview.
 
 ## Architecture Overview
+## Project Architecture :
+<img width="1674" height="1736" alt="final2 drawio" src="https://github.com/user-attachments/assets/c9c2c079-8299-45f9-b2c4-65e6230e0df7" />
 
 ### High-Level Flow
 
