@@ -36,7 +36,7 @@ delete_local_image() {
 }
 
 update_manifests() {
-  local manifest="k8s/ivolve/deployment.yaml"
+  local manifest="k8s/deployment.yaml"
   log "Updating manifest ${manifest} with ${IMAGE_URI}"
   sed -i -E "s|(image:\s*)(.*)|\\1${IMAGE_URI}|" "${manifest}"
 }
@@ -45,7 +45,7 @@ push_manifests() {
   log "Preparing to push manifest changes"
   git config user.email "github-actions@users.noreply.github.com"
   git config user.name "github-actions"
-  if git diff --quiet -- k8s/ivolve/deployment.yaml; then
+  if git diff --quiet -- k8s/deployment.yaml; then
     log "No manifest changes to commit"
     return
   fi
