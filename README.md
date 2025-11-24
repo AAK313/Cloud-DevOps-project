@@ -565,9 +565,9 @@ brew install minikube
 minikube start
 
 # Apply manifests
-kubectl apply -f k8s/ivolve/namespace.yaml
-kubectl apply -f k8s/ivolve/deployment.yaml
-kubectl apply -f k8s/ivolve/service.yaml
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
 
 # Check deployment
 kubectl get all -n ivolve
