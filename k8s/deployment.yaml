@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: amrk13/cloud-devops-app:0de57d38b9eb5b3e7f864c12765c6cf47b667177
+          image: amrk13/cloud-devops-app:081a68afb9cd3ba7fdfc38a5f7a943e1205ebbe1
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
